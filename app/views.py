@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from django.contrib.auth import logout
 from .sendwelcome import send_custom_email
+import threading
+
 
 
 
@@ -27,11 +29,18 @@ def signup_view(request):
             login(request, user)
             user_email = user.email
             user_name = user.name
-            subject="Welcome To SPaceX"
-            send_custom_email(user_email, user_name, subject)
-            return redirect(reverse('dashboard', args=[user.id]))
+            subject = "Welcome To SPaceX"
+            
+            # Redirect the user to the dashboard
+            response = redirect(reverse('dashboard', args=[user.id]))
+            
+            # Send email in a separate thread
+            threading.Thread(target=send_custom_email, args=(user_email, user_name, subject)).start()
+            
+            return response
     else:
         form = SignUpForm()
+    
     return render(request, 'app/sign-up.html', {'form': form})
 
 def signin_view(request):
