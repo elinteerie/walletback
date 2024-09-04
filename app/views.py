@@ -10,6 +10,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from django.contrib.auth import logout
+from .sendwelcome import send_custom_email
 
 
 
@@ -24,6 +25,10 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            user_email = user.email
+            user_name = user.name
+            subject="Welcome To SPaceX"
+            send_custom_email(user_email, user_name, subject)
             return redirect(reverse('dashboard', args=[user.id]))
     else:
         form = SignUpForm()
