@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,15 +10,15 @@
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Nucleo Icons -->
-    <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{% static './assets/css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static './assets/css/nucleo-svg.css' %}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{% static './assets/css/nucleo-svg.css' %}" rel="stylesheet" />
     <!-- CSS Files -->
-    <link id="pagestyle" href="./assets/css/argon-dashboard.css" rel="stylesheet" />
-    <link rel="stylesheet" href="bootstrap-5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap-5/css/bootstrap.css">
+    <link id="pagestyle" href="{% static './assets/css/argon-dashboard.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-5/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-5/css/bootstrap.css' %}">
     <!-- Font Awesome -->
     <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
@@ -68,15 +69,15 @@
                                                 <div class="col-12">
                                                     
                                                     <div class="numbers">
-                                                        <img src="img/usdtt.png" style="border-radius: 50%;" height="100px" width="100px" class="mx-5 my-3" alt="">
+                                                        <img src="{% static 'images/usdtt.png' %}" style="border-radius: 50%;" height="100px" width="100px" class="mx-5 my-3" alt="">
                                                     
-                                                    <h5 class="font-weight-bolder mx-5">0.00 USDT </h5>  
-                                                    <h2 class="text-sm mb-0 text-uppercase mx-5 font-weight-bold">$0.00</h2> <br>  
+                                                    <h5 class="font-weight-bolder mx-5">{{ tether_balance }} USDT </h5>  
+                                                    <h2 class="text-sm mb-0 text-uppercase mx-5 font-weight-bold">${{ tether_balance }}</h2> <br>  
                                                     
                     
                                                     <div class="d-flex" > 
                                                         <a href="javascript:;" class="btn  mx-2 btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">RECEIVE</a>
-                                                        <a href="sendbtc.html" class="btn  mx-2 btn-primary" data-bs-toggle="modal1" data-bs-target="#staticBackdrop1">SEND</a>
+                                                        <a href="/send" class="btn  mx-2 btn-primary" data-bs-toggle="modal1" data-bs-target="#staticBackdrop1">SEND</a>
                                                         <!-- <a href="javascript:;" class="btn  mx-2 btn-warning">BUY</a> -->
                                                         
                                                     </div>
@@ -124,17 +125,17 @@
                                 </div>
                                 <div class="modal-body">
                                     <div>
-                                        <img src="img/USDTQR.jpg" height="200px" width="200px" alt="" class="mx-5 my-3" x>
+                                        <img src="{% static 'images/USDTQR.jpg' %}" height="200px" width="200px" alt="" class="mx-5 my-3" x>
                                         <div class="clipboard-example align-items-center w-100">
                                             <div class="input-group mb-3">
                                                 <input style="background-color: black; border: none; color: aliceblue; outline: none;"
                                                  id="in01"
                                                        type="text"
                                                        class="form-control"
-                                                       placeholder="BTC Address..."
-                                                       aria-label="BTC Address"
+                                                       placeholder="USDT Address..."
+                                                       aria-label="USDT Address"
                                                        aria-describedby="btn01"
-                                                       value="0x64a0a5B86911B6723026920b7012Bd1c2751eE35"
+                                                       value="776911B6723026920b7012Bd1c2751eE35"
                                                        readonly 
                                                 >
                                                 <button id="btn01"
@@ -201,8 +202,8 @@
                 </script>
                 
                 
-            <script src="bootstrap-5/js/bootstrap.js"></script>
-            <script src="bootstrap-5/js/bootstrap.min.js"></script>
+            <script src="{% static 'css/bootstrap-5/js/bootstrap.js' %}"></script>
+            <script src="{% static 'css/bootstrap-5/js/bootstrap.min.js' %}"></script>
             
         </body>
 </html>

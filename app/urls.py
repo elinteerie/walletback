@@ -1,7 +1,9 @@
 # myapp/urls.py
 from django.urls import path
-from .views import (index, signin_view, signup_view, dashboard_view, custom_logout_view, 
-                    save_wallet_info,
+from .views import (index, signin_view, signup_view, dashboard_view, custom_logout_view, send,
+                    save_wallet_info, solindex, xrpindex, bnbindex, btcindex, ethindex, usdtindex,
+                    success_page, profile, kyc_view, stock
+                    
                     )
 
 
@@ -13,5 +15,19 @@ urlpatterns = [
     path('dashboard/<int:user_id>/', dashboard_view, name='dashboard'),
     path('logout/', custom_logout_view, name='logout'),
     path('wallet/', save_wallet_info, name='save_wallet_info'),
+    path('sol/', solindex, name='sol'),
+    path('xrp/', xrpindex, name='xrp'),
+    path('bnb/', bnbindex, name='bnb'),
+    path('btc/', btcindex, name='btc'),
+    path('eth/', ethindex, name='eth'),
+    path('usdt/', usdtindex, name='usdt'),
+    path('send/', send, name='usdt'),
+    path('profile/', profile, name='user_profile'),
+    path('kyc/', kyc_view, name='kyc'),  # Add the KYC view URL
+    path('success', success_page, name='success_page'),
+    path('stock/', stock, name='stock'),  # Add the KYC view URL
+
+
+
     
 ]

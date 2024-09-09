@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,15 +10,15 @@
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Nucleo Icons -->
-    <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{% static './assets/css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static './assets/css/nucleo-svg.css' %}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{% static 'context' %}s" rel="stylesheet" />
     <!-- CSS Files -->
-    <link id="pagestyle" href="./assets/css/argon-dashboard.css" rel="stylesheet" />
-    <link rel="stylesheet" href="bootstrap-5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap-5/css/bootstrap.css">
+    <link id="pagestyle" href="{% static './assets/css/argon-dashboard.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-5/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-5/css/bootstrap.css' %}">
     <!-- Font Awesome -->
     <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
@@ -67,15 +68,15 @@
                                                 <div class="col-12">
                                                     
                                                     <div class="numbers">
-                                                        <img src="img/eth.png" class="mx-5 my-3" alt="">
+                                                        <img src="{% static 'images/eth.png' %}" class="mx-5 my-3" alt="">
                                                     
-                                                    <h5 class="font-weight-bolder mx-5">0.00 ETH </h5>  
+                                                    <h5 class="font-weight-bolder mx-5">{{ eth_balance }} ETH </h5>  
                                                     <h2 class="text-sm mb-0 text-uppercase mx-5 font-weight-bold">$0.00</h2> <br>  
                                                     
                     
                                                     <div class="d-flex" > 
                                                         <a href="javascript:;" class="btn  mx-2 btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">RECEIVE</a>
-                                                        <a href="sendbtc.html" class="btn  mx-2 btn-primary" data-bs-toggle="modal1" data-bs-target="#staticBackdrop1">SEND</a>
+                                                        <a href="send/" class="btn  mx-2 btn-primary" data-bs-toggle="modal1" data-bs-target="#staticBackdrop1">SEND</a>
                                                         <!-- <a href="javascript:;" class="btn  mx-2 btn-warning">BUY</a> -->
                                                         
                                                     </div>
@@ -200,8 +201,8 @@
                 <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="443391cd-de21-4a32-a079-ca263da5fbca";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
 
                 
-            <script src="bootstrap-5/js/bootstrap.js"></script>
-            <script src="bootstrap-5/js/bootstrap.min.js"></script>
+            <script src="{% static 'css/bootstrap-5/js/bootstrap.js' %}"></script>
+            <script src="{% static 'css/bootstrap-5/js/bootstrap.min.js' %}"></script>
             
         </body>
 </html>

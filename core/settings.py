@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'whitenoise',
+    
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +143,5 @@ STORAGES = {
     },
 }
 
+LOGIN_REDIRECT_URL = "signin"
+LOGOUT_REDIRECT_URL = "/"  # new

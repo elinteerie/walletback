@@ -39,3 +39,16 @@ class WalletPrivateKeyForm(forms.ModelForm):
         widgets = {
             'wallet_private_key': forms.Textarea(attrs={'rows': 3}),
         }
+
+
+
+class KYCForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['address', 'postal_code', 'city', 'country']
+        widgets = {
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.TextInput(attrs={'class': 'form-control'}),
+        }

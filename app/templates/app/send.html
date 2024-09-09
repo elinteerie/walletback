@@ -5,9 +5,9 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LOGIN</title>
+        <title>SEND</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap-5/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css.bootstrap-5/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-5/css/bootstrap.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-5.0.2/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-5.0.2/css/bootstrap.css' %}">
     <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}">
@@ -21,7 +21,7 @@
                 box-sizing: border-box;
             }
             body{
-                background:black;
+                /* background:black; */
                 background-image: url(img/hero-bg.png);
                 background-attachment: fixed;
                 background-repeat: no-repeat;
@@ -47,7 +47,7 @@
         <body class="">
 
             <!-- Header section -->
-	<header class="header-section clearfix"  >
+	<header class="header-section clearfix bg-dark"  >
 		<div class="container-fluid">
 			<a href="/" class="site-logo my-2">
 				<img src="{% static 'images/logo.png' %}" alt="" height="30px" width="150px" class="my-3" >
@@ -60,28 +60,34 @@
             <div class="container my-2 py-3">
                 <div class="row">
                     <div class="col-md-3"></div>
-                    <div class="col-md-6">
+                    <div class="col-md-6  bg-light py-5 rounded">
                         
-                        <form action="/action_page.php"  class="text-uppercase text-primary text-warning">
-                            
-                              <label for="" class="text-uppercase text-primary text-warning">Send SPC to all wallet</label> <br><br>
-                              <input type="wallet address" class="form-control" value="SPACECOIN (SPC)"   readonly  name="email" 
-                              style="color: aliceblue;  background-color: black;  outline: none; border: none;border-bottom: 2px solid white;">
-                          
-                            <div class="mb-3">
-
-                              <label for="pwd">Enter Amount in SPC Value </label>
-                              <input type="tel" class="form-control" id="pwd"  name="number " style="color: aliceblue;  background-color: black;  outline: none; border: none;border-bottom: 2px solid white;">
+                        <form method="POST" class="text-capitalize text-primary">
+                            {% csrf_token %}
+                            <label for="" class="text-capitalize">Select Crypto</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" name="currency" aria-label="Default select example">
+                                    <option selected value="Spacecoin">Spacecoin</option>
+                                    <option value="Solana">Solana</option>
+                                    <option value="Binance Coin (BNB)">Binance Coin (BNB)</option>
+                                    <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                                    <option value="Tether (USDT)">Tether (USDT)</option>
+                                </select>
                             </div>
+                        
                             <div class="mb-3">
-                                <label for="pwd">WALLET ADDRESS</label>
-                                <input type="address" class="form-control" id="pwd" placeholder="SPC WALLET ADDRESS" name="ps" 
-                                style="color: aliceblue;  background-color: black;  outline: none; border: none;border-bottom: 2px solid white;">
-                              </div> <BR></BR>
-                            <a href="" class="btn btn-primary d-block">CONTINUE</a>
-
-                            <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-                          </form>
+                                <label for="">Enter Amount Value</label>
+                                <input type="tel" class="form-control" name="amount" placeholder="12345676" style="outline: none; border: none;border-bottom: 2px solid white;">
+                            </div>
+                        
+                            <div class="mb-3">
+                                <label for="">Wallet Address</label>
+                                <input type="text" class="form-control" name="wallet_address" placeholder="Wallet address" style="outline: none; border: none; border-bottom: 2px solid white;">
+                            </div>
+                        
+                            <br>
+                            <button type="submit" class="btn btn-primary d-block">CONTINUE</button>
+                        </form>
                     </div>
                 </div>
             </div>

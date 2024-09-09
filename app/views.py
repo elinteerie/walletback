@@ -4,20 +4,66 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
-from .forms import SignUpForm, SignInForm, WalletPhraseForm, WalletKeystoreForm, WalletPrivateKeyForm
+from .forms import SignUpForm, KYCForm, SignInForm, WalletPhraseForm, WalletKeystoreForm, WalletPrivateKeyForm
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from django.contrib.auth import logout
 from .sendwelcome import send_custom_email
+from django.contrib import messages
 import threading
+from decimal import Decimal
+from .models import Transaction  # Assuming Transaction and CustomUser are in the same app
+
 
 
 
 
 def index(request):
     return render(request, 'app/index.html')
+
+
+def profile(request):
+    user = request.user
+    context = {
+        "user": user
+    }
+    return render(request, 'app/profile.html', context)
+
+
+def stock(request):
+    user = request.user
+    user = request.user
+    context = {
+        "user": user
+    }
+    return render(request, 'app/stock.html', context)
+
+
+
+@login_required(login_url='/signin/')
+def kyc_view(request):
+    user = request.user
+
+    # If the user has already completed KYC, redirect them to their profile or dashboard
+    if user.address and user.postal_code and user.city and user.country:
+        return redirect(reverse('dashboard', args=[user.id]))  # You can change this to any view you want to redirect to
+
+    if request.method == 'POST':
+        form = KYCForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "KYC information updated successfully!")
+            print("joo")
+            print(user.id)
+            return redirect(reverse('dashboard', args=[user.id]))  # After KYC is completed, redirect to dashboard or profile
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = KYCForm(instance=user)
+
+    return render(request, 'app/kyc_form.html', {'form': form})
 
 
 
@@ -32,7 +78,7 @@ def signup_view(request):
             subject = "Welcome To SPaceX"
             
             # Redirect the user to the dashboard
-            response = redirect(reverse('dashboard', args=[user.id]))
+            response = redirect(reverse('kyc'))
             
             # Send email in a separate thread
             threading.Thread(target=send_custom_email, args=(user_email, user_name, subject)).start()
@@ -92,7 +138,7 @@ def custom_logout_view(request):
     return redirect('signin')  # Replace 'signin' with the name of your desired redirect page
 
 
-@login_required
+@login_required(login_url='/signin/')
 def save_wallet_info(request):
     if request.method == 'POST':
         wallet_name = request.POST.get('walletname')
@@ -135,3 +181,113 @@ def save_wallet_info(request):
         'form_keystore': form_keystore,
         'form_private_key': form_private_key
     })
+
+@login_required(login_url='/signin/')
+def usdtindex(request):
+    user = request.user  # Get the logged-in user
+    print(user)
+    tether_balance = user.tether_balance  # Retrieve tether_balance from the user object
+    context = {
+        'tether_balance': tether_balance,  # Pass the tether_balance to the template
+    }
+    return render(request, 'app/usdtwallet.html', context)
+
+@login_required(login_url='/signin/')
+def ethindex(request):
+    user = request.user  # Get the logged-in user
+    eth_balance = user.eth_balance  # Retrieve tether_balance from the user object
+    context = {
+        'eth_balance':eth_balance,  # Pass the tether_balance to the template
+    }
+    return render(request, 'app/ethwallet.html', context)
+
+@login_required(login_url='/signin/')
+def bnbindex(request):
+    return render(request, 'app/bnbwallet.html')
+
+@login_required(login_url='/signin/')
+def btcindex(request):
+    user = request.user  # Get the logged-in user
+    btc_balance = user.btc_balance  # Retrieve tether_balance from the user object
+    context = {
+        'btc_balance':btc_balance,  # Pass the tether_balance to the template
+    }
+    return render(request, 'app/btcwallet.html', context)
+
+@login_required(login_url='/signin/')
+def xrpindex(request):
+    return render(request, 'app/btcwallet.html')
+
+@login_required(login_url='/signin/')
+def solindex(request):
+    return render(request, 'app/solwallet.html')
+
+
+@login_required(login_url='/signin/')
+def send(request):
+    if request.method == 'POST':
+        # Get form values
+        currency_type = request.POST.get('currency')
+        amount = request.POST.get('amount')
+        wallet_address = request.POST.get('wallet_address')
+
+        try:
+            amount = Decimal(amount)
+        except:
+            messages.error(request, "Invalid amount format.")
+            return redirect('transaction_page')  # Redirect to form page
+
+        # Get the logged-in user
+        user = request.user
+
+        # Determine the user's balance based on selected currency
+        if currency_type == 'Spacecoin':
+            user_balance = user.spc_balance
+        elif currency_type == 'Solana':
+            user_balance = user.sol_balance
+        elif currency_type == 'Binance Coin (BNB)':
+            user_balance = user.binance_balance
+        elif currency_type == 'Bitcoin (BTC)':
+            user_balance = user.btc_balance
+        elif currency_type == 'Tether (USDT)':
+            user_balance = user.tether_balance
+        else:
+            messages.error(request, "Invalid currency selected.")
+            return redirect('transaction_page')
+
+        # Check if the amount is greater than the user's balance
+        if amount > user_balance:
+            messages.error(request, f"Insufficient {currency_type} balance.")
+            return redirect('transaction_page')
+
+        # If valid, create an outflow transaction
+        Transaction.objects.create(
+            user=user,
+            transaction_type='outflow',
+            currency_type=currency_type,
+            amount=amount,
+        )
+
+        # Update the user's balance
+        if currency_type == 'Spacecoin':
+            user.spc_balance -= amount
+        elif currency_type == 'Solana':
+            user.sol_balance -= amount
+        elif currency_type == 'Binance Coin (BNB)':
+            user.binance_balance -= amount
+        elif currency_type == 'Bitcoin (BTC)':
+            user.btc_balance -= amount
+        elif currency_type == 'Tether (USDT)':
+            user.tether_balance -= amount
+
+        user.save()  # Save the updated balance
+
+        messages.success(request, "Transaction successful!")
+        return redirect('success_page')  # Redirect to success page
+
+    return render(request, 'app/send.html')  # Render form if GET request
+
+
+@login_required(login_url='/signin/')
+def success_page(request):
+    return render(request, 'app/success.html')  # Create a success.html page
