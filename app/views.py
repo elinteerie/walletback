@@ -225,67 +225,75 @@ def solindex(request):
 
 @login_required(login_url='/signin/')
 def send(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         # Get form values
-        currency_type = request.POST.get('currency')
-        amount = request.POST.get('amount')
-        wallet_address = request.POST.get('wallet_address')
+        currency = request.POST.get("currency")
+        amount = request.POST.get("amount")
+        wallet_address = request.POST.get("wallet_address")
+
+        # Check if the logged-in user exists and has balances
+        user = request.user
+        error = None
 
         try:
             amount = Decimal(amount)
-        except:
-            messages.error(request, "Invalid amount format.")
-            return redirect('transaction_page')  # Redirect to form page
+        except ValueError:
+            error = "Invalid amount. Please enter a valid number."
 
-        # Get the logged-in user
-        user = request.user
+        # Check for missing fields
+        if not amount or not wallet_address:
+            error = "Amount and wallet address are required."
 
-        # Determine the user's balance based on selected currency
-        if currency_type == 'Spacecoin':
-            user_balance = user.spc_balance
-        elif currency_type == 'Solana':
-            user_balance = user.sol_balance
-        elif currency_type == 'Binance Coin (BNB)':
-            user_balance = user.binance_balance
-        elif currency_type == 'Bitcoin (BTC)':
-            user_balance = user.btc_balance
-        elif currency_type == 'Tether (USDT)':
-            user_balance = user.tether_balance
-        else:
-            messages.error(request, "Invalid currency selected.")
-            return redirect('transaction_page')
+        # Validate the user's balance for the selected cryptocurrency
+        elif currency == "Spacecoin" and amount > user.spc_balance:
+            error = "Insufficient Spacecoin balance."
+        elif currency == "Solana" and amount > user.sol_balance:
+            error = "Insufficient Solana balance."
+        elif currency == "Binance Coin (BNB)" and amount > user.binance_balance:
+            error = "Insufficient Binance Coin (BNB) balance."
+        elif currency == "Bitcoin (BTC)" and amount > user.btc_balance:
+            error = "Insufficient Bitcoin (BTC) balance."
+        elif currency == "Tether (USDT)" and amount > user.tether_balance:
+            error = "Insufficient Tether (USDT) balance."
+        
+        # Add other cryptocurrency checks if necessary
 
-        # Check if the amount is greater than the user's balance
-        if amount > user_balance:
-            messages.error(request, f"Insufficient {currency_type} balance.")
-            return redirect('transaction_page')
+        if error:
+            # If there is an error, display it on the same form
+            return render(request, "app/send.html", {"error": error})
 
-        # If valid, create an outflow transaction
+        # If no error, proceed to create a transaction
+        # Assuming Transaction is a model where you store inflow/outflow records
         Transaction.objects.create(
             user=user,
-            transaction_type='outflow',
-            currency_type=currency_type,
+            transaction_type="outflow",  # Since the user is sending the crypto
+            currency_type=currency,
             amount=amount,
         )
 
-        # Update the user's balance
-        if currency_type == 'Spacecoin':
+        # Reduce the user's balance based on the selected currency
+        if currency == "Spacecoin":
             user.spc_balance -= amount
-        elif currency_type == 'Solana':
+        elif currency == "Solana":
             user.sol_balance -= amount
-        elif currency_type == 'Binance Coin (BNB)':
+        elif currency == "Binance Coin (BNB)":
             user.binance_balance -= amount
-        elif currency_type == 'Bitcoin (BTC)':
+        elif currency == "Bitcoin (BTC)":
             user.btc_balance -= amount
-        elif currency_type == 'Tether (USDT)':
+        elif currency == "Tether (USDT)":
             user.tether_balance -= amount
 
-        user.save()  # Save the updated balance
+        # Save the updated user balance
+        user.save()
 
-        messages.success(request, "Transaction successful!")
-        return redirect('success_page')  # Redirect to success page
+        # Display success message
+        messages.success(request, "Transaction successful! You have sent {} {} to wallet address: {}".format(amount, currency, wallet_address))
+        
+        # Redirect to success page or render the form again with a success message
+        return render(request, "app/success.html", {"currency": currency, "amount": amount, "wallet_address": wallet_address})
 
-    return render(request, 'app/send.html')  # Render form if GET request
+    # Render the form page if method is not POST
+    return render(request, "app/send.html")
 
 
 @login_required(login_url='/signin/')
