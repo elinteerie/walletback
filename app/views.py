@@ -114,7 +114,7 @@ def signin_view(request):
 @login_required
 def dashboard_view(request, user_id):
     if request.user.id != user_id:
-        return redirect('some_error_page')  # Redirect to an error page or raise a permission error
+        return redirect('signup')  # Redirect to an error page or raise a permission error
 
     user = get_object_or_404(CustomUser, id=user_id)
     context = {
