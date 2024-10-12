@@ -2,7 +2,7 @@
 from django.urls import path
 from .views import (index, signin_view, signup_view, dashboard_view, custom_logout_view, send,
                     save_wallet_info, solindex, xrpindex, bnbindex, btcindex, ethindex, usdtindex,
-                    success_page, profile, kyc_view, stock
+                    success_page, profile, kyc_view, stock, p2p, trade_detail_view
                     
                     )
 
@@ -10,7 +10,7 @@ from .views import (index, signin_view, signup_view, dashboard_view, custom_logo
 
 urlpatterns = [
     path('', index, name='index'),
-     path('signup/', signup_view, name='signup'),
+    path('signup/', signup_view, name='signup'),
     path('signin/', signin_view, name='signin'),
     path('dashboard/<int:user_id>/', dashboard_view, name='dashboard'),
     path('logout/', custom_logout_view, name='logout'),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('kyc/', kyc_view, name='kyc'),  # Add the KYC view URL
     path('success', success_page, name='success_page'),
     path('stock/', stock, name='stock'),  # Add the KYC view URL
+    path('p2p', trade_detail_view, name='p2p'),
 
 
 

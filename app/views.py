@@ -8,7 +8,7 @@ from .forms import SignUpForm, KYCForm, SignInForm, WalletPhraseForm, WalletKeys
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser
+from .models import CustomUser, Trade
 from django.contrib.auth import logout
 from .sendwelcome import send_custom_email
 from django.contrib import messages
@@ -299,3 +299,17 @@ def send(request):
 @login_required(login_url='/signin/')
 def success_page(request):
     return render(request, 'app/success.html')  # Create a success.html page
+
+
+
+
+def p2p(request):
+    return render(request, 'app/p2ptrade.html')
+
+
+def trade_detail_view(request):
+    trades = Trade.objects.all()
+    context = {
+        'trades': trades,
+    }
+    return render(request, 'app/p2ptrade.html', context)

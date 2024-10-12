@@ -1,0 +1,476 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <title>SPACECOIN | P2P Market</title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link href="{% static './assets/css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static './assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+    <link href="{% static './assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static './assets/css/argon-dashboard.css' %}" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="bootstrap-5.0.2/css/bootstrap.min.css"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            /* color: rgb(255, 255, 255); */
+        }
+
+        .card {
+            transition: transform 0.2s;
+            /* background-color: black;
+            color: white; */
+        }
+        .card-title, .card-text {
+            color: black;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .countdown {
+            font-weight: bold;
+            color: red;
+        }
+
+        .table-striped tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .transaction-status {
+            font-weight: bold;
+        }
+
+        .transaction-status.pending {
+            color: orange;
+        }
+
+        .transaction-status.canceled {
+            color: red;
+        }
+
+        .order-timer {
+            font-size: 1.2rem;
+            color: red;
+        }
+
+        .contact-button {
+            margin-top: 10px;
+        }
+
+        .merchant-rating {
+            color: gold;
+        }
+    </style>
+  
+
+  </head>
+
+            <body class="g-sidenav-show " >   
+              <div class="min-height-300 bg-gradient-dark position-absolute w-100"></div>
+              <aside class="sidenav  navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " style="background-color: whitesmoke; color: rgb(12, 1, 1);" id="sidenav-main">
+                <div class="sidenav-header">
+                  <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+                  <a class="navbar-brand m-0" href=" #" target="_blank">
+                    <img src="{% static 'images/logo1.png' %}" alt="" height="70px" width="150px" >
+
+                    <!-- <span class="ms-1 font-weight-bold">SPACECOIN</span> -->
+                  </a>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="dashboard.html">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="wallet.html">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512"><style>svg{fill:#05ad7b}</style><path d="M201.1 71.9c16.9-5 26.6-22.9 21.5-39.8s-22.9-26.6-39.8-21.5c-21.5 6.4-41.8 15.5-60.6 27C114.3 34 105.4 32 96 32C60.7 32 32 60.7 32 96c0 9.4 2 18.3 5.6 26.3c-11.5 18.7-20.6 39-27 60.6c-5 16.9 4.6 34.8 21.5 39.8s34.8-4.6 39.8-21.5c4.3-14.6 10.4-28.5 17.9-41.4c2 .2 4.1 .3 6.1 .3c35.3 0 64-28.7 64-64c0-2.1-.1-4.1-.3-6.1c12.9-7.5 26.8-13.6 41.4-17.9zm128-61.3c-16.9-5-34.8 4.6-39.8 21.5s4.6 34.8 21.5 39.8c14.6 4.3 28.5 10.4 41.4 17.9c-.2 2-.3 4.1-.3 6.1c0 35.3 28.7 64 64 64c2.1 0 4.1-.1 6.2-.3c7.5 12.9 13.6 26.8 17.9 41.4c5 16.9 22.9 26.6 39.8 21.5s26.6-22.9 21.5-39.8c-6.4-21.5-15.5-41.8-27-60.6c3.6-8 5.6-16.9 5.6-26.3c0-35.3-28.7-64-64-64c-9.4 0-18.3 2-26.3 5.6c-18.7-11.5-39-20.6-60.6-27zM71.9 310.9c-5-16.9-22.9-26.6-39.8-21.5s-26.6 22.9-21.5 39.8c6.4 21.5 15.5 41.8 27 60.6C34 397.7 32 406.6 32 416c0 35.3 28.7 64 64 64c9.4 0 18.3-2 26.3-5.6c18.7 11.5 39 20.6 60.6 27c16.9 5 34.8-4.6 39.8-21.5s-4.6-34.8-21.5-39.8c-14.6-4.3-28.5-10.4-41.4-17.9c.2-2 .3-4.1 .3-6.2c0-35.3-28.7-64-64-64c-2.1 0-4.1 .1-6.2 .3c-7.5-12.9-13.6-26.8-17.9-41.4zm429.4 18.3c5-16.9-4.6-34.8-21.5-39.8s-34.8 4.6-39.8 21.5c-4.3 14.6-10.4 28.5-17.9 41.4c-2-.2-4.1-.3-6.2-.3c-35.3 0-64 28.7-64 64c0 2.1 .1 4.1 .3 6.2c-12.9 7.5-26.8 13.6-41.4 17.9c-16.9 5-26.6 22.9-21.5 39.8s22.9 26.6 39.8 21.5c21.5-6.4 41.8-15.5 60.6-27c8 3.6 16.9 5.6 26.3 5.6c35.3 0 64-28.7 64-64c0-9.4-2-18.3-5.6-26.3c11.5-18.7 20.6-39 27-60.6zM192.8 256.8c0-15.6 5.6-29.9 14.9-41.1L223 231c6.6 6.6 17.8 1.9 17.8-7.4V163.2c0-5.7-4.7-10.4-10.4-10.4H169.9c-9.3 0-13.9 11.2-7.4 17.8l11.2 11.2c-17.9 19.8-28.9 46.2-28.9 75.1c0 43.6 24.9 81.3 61.1 99.8c11.8 6 26.3 1.4 32.3-10.4s1.4-26.3-10.4-32.3c-20.8-10.6-34.9-32.2-34.9-57zm93.1-58.6c20.8 10.6 34.9 32.2 34.9 57c0 15.6-5.6 29.9-14.9 41.1L290.6 281c-6.6-6.6-17.8-1.9-17.8 7.4v60.5c0 5.7 4.7 10.4 10.4 10.4h60.5c9.3 0 13.9-11.2 7.4-17.8l-11.2-11.2c17.9-19.8 28.9-46.2 28.9-75.1c0-43.6-24.9-81.3-61.1-99.8c-11.8-6-26.3-1.4-32.3 10.4s-1.4 26.3 10.4 32.3z"/></svg>
+                        </div>
+                        <span class="nav-link-text ms-1">Inport Wallet</span>
+                      </a>
+                    </li>
+                  
+                    <li class="nav-item">
+                      <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512"><path fill="#05ad7b" d="M288 109.3L288 352c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-242.7-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352l128 0c0 35.3 28.7 64 64 64s64-28.7 64-64l128 0c35.3 0 64 28.7 64 64l0 32c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64l0-32c0-35.3 28.7-64 64-64zM432 456a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>
+                        </div>
+                        <span class="nav-link-text ms-1"> Send</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512"><path fill="#05ad7b" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+                        </div>
+                        <span class="nav-link-text ms-1"> Receive</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="www.moonpay.com/buy" target="_blank">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1"> Buy Crypto</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="#" target="_blank">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="20" width="25" viewBox="0 0 640 512"><path fill="#05ad7b" d="M416 176c0 97.2-93.1 176-208 176c-38.2 0-73.9-8.7-104.7-23.9c-7.5 4-16 7.9-25.2 11.4C59.8 346.4 37.8 352 16 352c-6.9 0-13.1-4.5-15.2-11.1s.2-13.8 5.8-17.9c0 0 0 0 0 0s0 0 0 0l.2-.2c.2-.2 .6-.4 1.1-.8c1-.8 2.5-2 4.3-3.7c3.6-3.3 8.5-8.1 13.3-14.3c5.5-7 10.7-15.4 14.2-24.7C14.7 250.3 0 214.6 0 176C0 78.8 93.1 0 208 0S416 78.8 416 176zM231.5 383C348.9 372.9 448 288.3 448 176c0-5.2-.2-10.4-.6-15.5C555.1 167.1 640 243.2 640 336c0 38.6-14.7 74.3-39.6 103.4c3.5 9.4 8.7 17.7 14.2 24.7c4.8 6.2 9.7 11 13.3 14.3c1.8 1.6 3.3 2.9 4.3 3.7c.5 .4 .9 .7 1.1 .8l.2 .2s0 0 0 0s0 0 0 0c5.6 4.1 7.9 11.3 5.8 17.9c-2.1 6.6-8.3 11.1-15.2 11.1c-21.8 0-43.8-5.6-62.1-12.5c-9.2-3.5-17.8-7.4-25.2-11.4C505.9 503.3 470.2 512 432 512c-95.6 0-176.2-54.6-200.5-129zM228 72c0-11-9-20-20-20s-20 9-20 20l0 14c-7.6 1.7-15.2 4.4-22.2 8.5c-13.9 8.3-25.9 22.8-25.8 43.9c.1 20.3 12 33.1 24.7 40.7c11 6.6 24.7 10.8 35.6 14l1.7 .5c12.6 3.8 21.8 6.8 28 10.7c5.1 3.2 5.8 5.4 5.9 8.2c.1 5-1.8 8-5.9 10.5c-5 3.1-12.9 5-21.4 4.7c-11.1-.4-21.5-3.9-35.1-8.5c-2.3-.8-4.7-1.6-7.2-2.4c-10.5-3.5-21.8 2.2-25.3 12.6s2.2 21.8 12.6 25.3c1.9 .6 4 1.3 6.1 2.1c0 0 0 0 0 0s0 0 0 0c8.3 2.9 17.9 6.2 28.2 8.4l0 14.6c0 11 9 20 20 20s20-9 20-20l0-13.8c8-1.7 16-4.5 23.2-9c14.3-8.9 25.1-24.1 24.8-45c-.3-20.3-11.7-33.4-24.6-41.6c-11.5-7.2-25.9-11.6-37.1-15l-.7-.2c-12.8-3.9-21.9-6.7-28.3-10.5c-5.2-3.1-5.3-4.9-5.3-6.7c0-3.7 1.4-6.5 6.2-9.3c5.4-3.2 13.6-5.1 21.5-5c9.6 .1 20.2 2.2 31.2 5.2c10.7 2.8 21.6-3.5 24.5-14.2s-3.5-21.6-14.2-24.5c-6.5-1.7-13.7-3.4-21.1-4.7L228 72z"/></svg>
+                        </div>
+                        <span class="nav-link-text ms-1"> P2P trade</span>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link " href="#" target="_blank">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="20" width="22.5" viewBox="0 0 576 512"><path fill="#05ad7b" d="M248 0L208 0c-26.5 0-48 21.5-48 48l0 112c0 35.3 28.7 64 64 64l128 0c35.3 0 64-28.7 64-64l0-112c0-26.5-21.5-48-48-48L328 0l0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80zM64 256c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l160 0c35.3 0 64-28.7 64-64l0-128c0-35.3-28.7-64-64-64l-40 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80-40 0zM352 512l160 0c35.3 0 64-28.7 64-64l0-128c0-35.3-28.7-64-64-64l-40 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80-40 0c-15 0-28.8 5.1-39.7 13.8c4.9 10.4 7.7 22 7.7 34.2l0 160c0 12.2-2.8 23.8-7.7 34.2C323.2 506.9 337 512 352 512z"/></svg>
+                        </div>
+                        <span class="nav-link-text ms-1"> Buy Stocks Shares</span>
+                      </a>
+                    </li>
+                  
+                    <li class="nav-item mt-3">
+                      <h6 class="ps-4 ms-2 text-capitalize text-xs font-weight-bolder opacity-6">Account pages</h6>
+                    </li>
+                    
+                    <li class="nav-item">
+                      <a class="nav-link " href="profile.html">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Profile</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="profile.html">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">KYC Verification</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="index.html">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Log out</span>
+                      </a>
+                    </li>
+                    
+                  </ul>
+                </div>
+                </div>
+              </aside>
+              
+              <main class="main-content position-relative border-radius-lg"  style="background-color: rgb(10, 1, 1); color: rgb(249, 242, 242);">
+                <!-- Navbar -->
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+                  <div class="container-fluid py-1 px-3">
+                    <nav aria-label="breadcrumb">
+                      <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                        <!-- <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li> -->
+                        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Buy & Sell $SPC</li>
+                      </ol>
+                      <h6 class="font-weight-bolder text-white mb-0">P2P MARKET</h6>
+                    </nav>
+                    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                    
+                      <ul class="navbar-nav  justify-content-end">
+                      
+                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                          <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                            <div class="sidenav-toggler-inner">
+                              <i class="sidenav-toggler-line bg-white"></i>
+                              <i class="sidenav-toggler-line bg-white"></i>
+                              <i class="sidenav-toggler-line bg-white"></i>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="nav-item px-3 d-flex align-items-center">
+                          <a href="javascript:;" class="nav-link text-white p-0">
+                            <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </nav>
+                <!-- End Navbar -->
+                
+                
+                <div class="container my-5">
+                  {% if trades %}
+
+                
+                    <!-- Merchant Offers Section -->
+                    <div class="row my-4" id="merchantOffers">
+                      {% for trade in trades %}
+                        <!-- Merchant 1 -->
+                        <div class="col-md-3 col-lg-3">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ trade.user.name }}</h5>
+                                    <p class="card-text">Crypto: {{ trade.get_crypto_display }}</p>
+                                    <p class="card-text">Rate: ${{ trade.rate }}/1 {{ trade.get_crypto_display }}</p>
+                                    <h6 class="card-text">Min: {{ trade.min_buy }} SPC</h6>
+                                    <h6 class="card-text">Max: {{ trade.max_buy }} SPC</h6>
+            
+                                    <p class="merchant-rating"><i class="fas fa-star"></i> {{ trade.user.rating }} ({{ trade.user.completed_trades }} trades)</p>
+                                    
+                                    <button class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#checkoutModal" data-crypto="Spacecoin" data-rate="50000" data-action="Buy">Buy</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal" data-crypto="Spacecoin" data-rate="50000" data-action="Sell">Sell</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        {% endfor %}
+                        
+                        
+                        
+                        {% else %}
+                        <p>No trades available.</p>
+                        {% endif %}
+                        
+            
+                    <!-- Transaction History -->
+                    <div class="my-4 p-4" style="background-color: #f1f1f1;">
+                        <h3 class="text-center">Transaction History</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Transaction</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Time Left</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionHistory">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Buy Spacecoin</td>
+                                    <td>$5000</td>
+                                    <td class="transaction-status pending">Pending Payment</td>
+                                    <td><span class="order-timer" data-time="900">15:00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Sell Spacecoin</td>
+                                    <td>$2000</td>
+                                    <td class="transaction-status">Approved</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Buy Spacecoin</td>
+                                    <td>$500</td>
+                                    <td class="transaction-status canceled">Canceled</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <!-- Checkout Modal -->
+                    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="checkoutForm">
+                                        <div class="mb-3">
+                                            <label for="amount" class="form-label">Amount</label>
+                                            <input type="number" class="form-control" id="amount" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="paymentMethod" class="form-label">Payment Method</label>
+                                            <select class="form-select" id="paymentMethod">
+                                                <option value="Bank Transfer">Bank Transfer</option>
+                                                <option value="PayPal">PayPal</option>
+                                                <option value="Crypto Wallet">Crypto Wallet</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="paymentDetails" class="form-label">Payment Details</label>
+                                            <textarea class="form-control" id="paymentDetails" rows="3" readonly></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <button type="button" class="btn btn-info contact-button">Contact Merchant</button>
+                                        </div>
+                                        <div class="mb-3 countdown" id="countdown"></div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel Trade</button>
+                                    <button type="button" class="btn btn-primary" id="confirmPayment">I Have Made Payment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Approval Modal -->
+                    <div class="modal fade" id="approvalModal" tabindex="-1" aria-labelledby="approvalModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="approvalModalLabel">Payment Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body " style="color: black;">
+                                    Your payment has been confirmed! Your order is being processed and is waiting for the merchant's confirmation.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="viewConfirmation">View Order Status</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Confirmation Page -->
+                    <div id="confirmationPage" style="display: none;">
+                        <h2 style="color: white;">Order Confirmation</h2>
+                        <p style="color: whitesmoke;">Order for <span id="confirmCrypto"></span> amount <span id="confirmAmount"></span> at rate <span id="confirmRate"></span> is created and waiting for confirmation by the merchant.</p>
+                        <button class="btn btn-primary" onclick="goBackToMarket()">Back to Market</button>
+                    </div>
+                </div>
+            
+                <!-- Scripts -->
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+                <script>
+                    // Modal functionality with timer
+                    const checkoutModal = document.getElementById('checkoutModal');
+                    checkoutModal.addEventListener('show.bs.modal', function (event) {
+                        const button = event.relatedTarget;
+                        const crypto = button.getAttribute('data-crypto');
+                        const rate = button.getAttribute('data-rate');
+                        const action = button.getAttribute('data-action');
+                        const paymentDetails = `Pay ${action === "Buy" ? "to" : "from"} this merchant.`;
+            
+                        const amountInput = checkoutModal.querySelector('#amount');
+                        const paymentMethodSelect = checkoutModal.querySelector('#paymentMethod');
+                        const paymentDetailsTextarea = checkoutModal.querySelector('#paymentDetails');
+                        const countdown = checkoutModal.querySelector('#countdown');
+            
+                        amountInput.value = '';
+                        paymentDetailsTextarea.value = paymentDetails;
+            
+                        let timerDuration = 15 * 60; // 15 minutes in seconds
+                        const countdownInterval = setInterval(() => {
+                            const minutes = Math.floor(timerDuration / 60);
+                            const seconds = timerDuration % 60;
+                            countdown.textContent = `Time remaining: ${minutes}m ${seconds}s`;
+                            if (timerDuration <= 0) {
+                                clearInterval(countdownInterval);
+                                alert("Time expired! Please try again.");
+                                const modalInstance = bootstrap.Modal.getInstance(checkoutModal);
+                                modalInstance.hide();
+                            }
+                            timerDuration--;
+                        }, 1000);
+            
+                        document.getElementById('confirmPayment').onclick = function () {
+                            const amount = amountInput.value;
+                            if (amount) {
+                                // Show approval modal
+                                const approvalModal = new bootstrap.Modal(document.getElementById('approvalModal'));
+                                approvalModal.show();
+            
+                                // Update confirmation page details
+                                document.getElementById('confirmCrypto').textContent = crypto;
+                                document.getElementById('confirmAmount').textContent = amount + ' ' + crypto;
+                                document.getElementById('confirmRate').textContent = rate;
+            
+                                // Hide checkout modal
+                                const checkoutModalInstance = bootstrap.Modal.getInstance(checkoutModal);
+                                checkoutModalInstance.hide();
+                            }
+                        }
+                    });
+            
+                    document.getElementById('viewConfirmation').addEventListener('click', function () {
+                        // Hide approval modal
+                        const approvalModalInstance = bootstrap.Modal.getInstance(document.getElementById('approvalModal'));
+                        approvalModalInstance.hide();
+            
+                        // Show confirmation page
+                        document.getElementById('merchantOffers').style.display = 'none';
+                        document.getElementById('confirmationPage').style.display = 'block';
+                    });
+            
+                    function goBackToMarket() {
+                        document.getElementById('confirmationPage').style.display = 'none';
+                        document.getElementById('merchantOffers').style.display = 'block';
+                    }
+            
+                    // Timer logic for transaction history
+                    const timers = document.querySelectorAll('.order-timer');
+                    timers.forEach(timer => {
+                        let time = parseInt(timer.getAttribute('data-time'));
+                        const interval = setInterval(() => {
+                            if (time <= 0) {
+                                clearInterval(interval);
+                                timer.textContent = "Expired";
+                            } else {
+                                const minutes = Math.floor(time / 60);
+                                const seconds = time % 60;
+                                timer.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                                time--;
+                            }
+                        }, 1000);
+                    });
+                </script>
+
+
+
+
+
+              <!--   Core JS Files   -->
+              <script src="./assets/js/core/popper.min.js"></script>
+              <script src="./assets/js/core/bootstrap.min.js"></script>
+              <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
+              <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
+              <script src="./assets/js/plugins/chartjs.min.js"></script>
+            
+              <!-- Github buttons -->
+              <script async defer src="https://buttons.github.io/buttons.js"></script>
+              <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+              <script src="./assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+            </body>
+
+</html>

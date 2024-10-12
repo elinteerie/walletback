@@ -45,6 +45,8 @@ class CustomUser(AbstractUser):
     sol_balance = models.DecimalField(max_digits=20, decimal_places=5, default=0.0000)
     binance_balance = models.DecimalField(max_digits=20, decimal_places=5, default=0.000)
     ripple_balance = models.DecimalField(max_digits=20, decimal_places=5, default=0.000)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)  # Rating out of 5 stars
+    completed_trades = models.IntegerField(default=0)  # Tracks number of completed trad
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -140,5 +142,22 @@ class Transaction(models.Model):
         
         
         # Save the updated balance to the user
+
+class Trade(models.Model):
+    CRYPTO_CHOICES = [
+        ('spc', 'SPC'),
+        ('tether', 'Tether'),
+        ('btc', 'Bitcoin'),
+        ('eth', 'Ethereum'),
+    ]
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='trades')
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    crypto = models.CharField(max_length=10, choices=CRYPTO_CHOICES)
+    min_buy = models.DecimalField(max_digits=10, decimal_places=2)
+    max_buy = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Trade by {self.user.email} - Crypto: {self.crypto}'
         
 
