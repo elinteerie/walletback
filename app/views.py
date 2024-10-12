@@ -306,10 +306,12 @@ def success_page(request):
 def p2p(request):
     return render(request, 'app/p2ptrade.html')
 
-
+@login_required(login_url='/signin/')
 def trade_detail_view(request):
+    user = request.user
     trades = Trade.objects.all()
     context = {
         'trades': trades,
+        'user': user
     }
     return render(request, 'app/p2ptrade.html', context)
