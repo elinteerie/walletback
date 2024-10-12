@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import F
 from django.contrib.auth.models import BaseUserManager
-
+from django.utils import timezone
+from datetime import timedelta
 
 
 class CustomUserManager(BaseUserManager):
@@ -156,8 +157,60 @@ class Trade(models.Model):
     min_buy = models.DecimalField(max_digits=10, decimal_places=2)
     max_buy = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+    whatsapp_phone_number = models.CharField(max_length=50, null=True, blank=True)
+
+    paypal_email = models.EmailField(null=True, blank=True)
+    bank_name = models.CharField(max_length=100, null=True, blank=True)
+    account_number = models.CharField(max_length=50, null=True, blank=True)
+    account_holder_name = models.CharField(max_length=100, null=True, blank=True)
+
+
+    def save(self, *args, **kwargs):
+        if self.whatsapp_phone_number:
+            # Remove leading zero and add the country code based on user location
+            if not self.whatsapp_phone_number.startswith('+'):
+                self.whatsapp_phone_number = self.format_phone_number(self.whatsapp_phone_number, self.user.country)
+        super().save(*args, **kwargs)
+
+    def format_phone_number(self, phone_number, country):
+        if phone_number.startswith('0'):
+            # Remove leading zero
+            phone_number = phone_number[1:]
+        
+        
+        # Add appropriate country code based on the user's country
+        country_code = ''
+        if country == 'Nigeria':
+            country_code = '+234'
+        elif country == 'United States':
+            country_code = '+1'
+        # Add other country codes as needed
+
+        return country_code + phone_number
 
     def __str__(self):
         return f'Trade by {self.user.email} - Crypto: {self.crypto}'
         
 
+
+
+class TradeTransaction(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('cancelled', 'Cancelled'),
+        ('payment_made', 'Payment_Made'),
+    ]
+
+    buyer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='transactions')
+    trade = models.ForeignKey(Trade, on_delete=models.CASCADE, related_name='transactions')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    transaction_expiration = models.DateTimeField(default=timezone.now() + timedelta(minutes=20))
+
+    def __str__(self):
+        return f'Transaction by {self.buyer.email} for Trade ID: {self.trade.id}'
+
+    def is_expired(self):
+        return timezone.now() > self.transaction_expiration

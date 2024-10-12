@@ -4,11 +4,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
-from .forms import SignUpForm, KYCForm, SignInForm, WalletPhraseForm, WalletKeystoreForm, WalletPrivateKeyForm
+from .forms import SignUpForm, KYCForm, TradeTransactionForm, SignInForm, WalletPhraseForm, WalletKeystoreForm, WalletPrivateKeyForm
 from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser, Trade
+from .models import CustomUser, Trade, TradeTransaction
 from django.contrib.auth import logout
 from .sendwelcome import send_custom_email
 from django.contrib import messages
@@ -310,8 +312,80 @@ def p2p(request):
 def trade_detail_view(request):
     user = request.user
     trades = Trade.objects.all()
+    transactions = TradeTransaction.objects.filter(buyer=request.user).order_by('-created_at')
+    for transaction in transactions:
+        # Calculate time left in seconds
+        if transaction.status == 'pending':
+            time_left = (transaction.transaction_expiration - timezone.now()).total_seconds()
+            transaction.time_left = max(int(time_left), 0)  # Ensure no negative time
+            
+            # Convert to minutes and seconds
+            minutes = transaction.time_left // 60
+            seconds = transaction.time_left % 60
+            transaction.formatted_time_left = f"{minutes}:{seconds:02}"  # Format as MM:SS
+            print(transaction.formatted_time_left)
+        else:
+            transaction.formatted_time_left = "-"  # Not applicable for non-pending transactions
     context = {
         'trades': trades,
-        'user': user
+        'user': user,
+        'transactions': transactions
     }
     return render(request, 'app/p2ptrade.html', context)
+
+
+@login_required(login_url='/signin/')
+def create_trade_transaction_view(request, trade_id):
+    trade = get_object_or_404(Trade, id=trade_id)
+
+    # Check if trade has expired
+    if trade.transactions.filter(status='pendinga', transaction_expiration__lte=timezone.now()).exists():
+        return render(request, 'app/trade_expired.html', {'trade': trade})
+
+    if request.method == 'POST':
+        form = TradeTransactionForm(request.POST, trade=trade)
+        if form.is_valid():
+            # Create a new trade transaction
+            transaction = form.save(commit=False)
+            transaction.buyer = request.user
+            transaction.trade = trade
+            transaction.save()
+
+            return redirect('trade_transaction_success', transaction_id=transaction.id)
+    else:
+        form = TradeTransactionForm(trade=trade)
+
+    return render(request, 'app/create_trade_transaction.html', {'form': form, 'trade': trade})
+
+@login_required(login_url='/signin/')
+def trade_transaction_success_view(request, transaction_id):
+    transaction = get_object_or_404(TradeTransaction, id=transaction_id)
+    trade = transaction.trade
+
+    # Render the success page
+    return render(request, 'app/trade_transaction_success.html', {
+        'transaction': transaction,
+        'trade': trade,
+        'transaction_expiration': transaction.transaction_expiration,
+    })
+
+@login_required(login_url='/signin/')
+def cancel_transaction_view(request, transaction_id):
+    transaction = get_object_or_404(TradeTransaction, id=transaction_id)
+    
+    if request.method == 'POST':
+        transaction.status = 'cancelled'  # Update to 'cancelled' status
+        transaction.save()
+        messages.success(request, 'Transaction has been cancelled successfully.')
+        return redirect('trade_transaction_success', transaction_id=transaction.id)
+
+def mark_payment_made_view(request, transaction_id):
+    transaction = get_object_or_404(TradeTransaction, id=transaction_id)
+    
+    if request.method == 'POST':
+        transaction.status = 'payment_made'  # Update to 'payment_made' status
+        transaction.save()
+        messages.success(request, 'Payment has been marked successfully.')
+        return redirect('trade_transaction_success', transaction_id=transaction.id)
+    
+

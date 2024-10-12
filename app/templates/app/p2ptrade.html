@@ -249,7 +249,7 @@
             
                                     <p class="merchant-rating"><i class="fas fa-star"></i> {{ trade.user.rating }} ({{ trade.user.completed_trades }} trades)</p>
                                     
-                                    <button class="btn btn-custom me-2" data-bs-toggle="modal" data-bs-target="#checkoutModal" data-crypto="Spacecoin" data-rate="50000" data-action="Buy">Buy</button>
+                                    <a href="/p2p/{{ trade.id }}/buy/"  class="btn btn-custom me-2">Buy</a>
                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal" data-crypto="Spacecoin" data-rate="50000" data-action="Sell">Sell</button>
                                 </div>
                             </div>
@@ -275,30 +275,28 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Time Left</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="transactionHistory">
+                              {% for transaction in transactions %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>Buy Spacecoin</td>
-                                    <td>$5000</td>
-                                    <td class="transaction-status pending">Pending Payment</td>
-                                    <td><span class="order-timer" data-time="900">15:00</span></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ transaction.trade.crypto }}</td>
+                                    <td>${{ transaction.amount }}</td>
+                                    <td>{{transaction.get_status_display}}</td>
+                                    <td>
+                                      <span id="countdown-{{ transaction.id }}" class="order-timer" data-time="{{ transaction.formatted_time_left }}">
+                                        {{ transaction.formatted_time_left }}
+                                    </span>
+                                      
+                                    </td>
+                                    <td>
+                                      <a href="{% url 'trade_transaction_success' transaction.id %}">View Trade</a>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Sell Spacecoin</td>
-                                    <td>$2000</td>
-                                    <td class="transaction-status">Approved</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Buy Spacecoin</td>
-                                    <td>$500</td>
-                                    <td class="transaction-status canceled">Canceled</td>
-                                    <td>-</td>
-                                </tr>
+                              
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -390,19 +388,7 @@
                         amountInput.value = '';
                         paymentDetailsTextarea.value = paymentDetails;
             
-                        let timerDuration = 15 * 60; // 15 minutes in seconds
-                        const countdownInterval = setInterval(() => {
-                            const minutes = Math.floor(timerDuration / 60);
-                            const seconds = timerDuration % 60;
-                            countdown.textContent = `Time remaining: ${minutes}m ${seconds}s`;
-                            if (timerDuration <= 0) {
-                                clearInterval(countdownInterval);
-                                alert("Time expired! Please try again.");
-                                const modalInstance = bootstrap.Modal.getInstance(checkoutModal);
-                                modalInstance.hide();
-                            }
-                            timerDuration--;
-                        }, 1000);
+                      
             
                         document.getElementById('confirmPayment').onclick = function () {
                             const amount = amountInput.value;
@@ -474,3 +460,47 @@
             </body>
 
 </html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Get all countdown elements
+      const countdownElements = document.querySelectorAll('.order-timer');
+
+      countdownElements.forEach(element => {
+          // Get the formatted time from the data attribute
+          const timeString = element.getAttribute('data-time'); // e.g., "45:59"
+
+          // Convert MM:SS to total milliseconds
+          const timeParts = timeString.split(':');
+          const minutes = parseInt(timeParts[0]) || 0; // Get minutes
+          const seconds = parseInt(timeParts[1]) || 0; // Get seconds
+
+          // Calculate total milliseconds
+          let totalMilliseconds = (minutes * 60 + seconds) * 1000;
+
+          // Check if the total milliseconds is valid
+          if (!isNaN(totalMilliseconds) && totalMilliseconds > 0) {
+              const interval = setInterval(() => {
+                  // Calculate minutes and seconds left
+                  const remainingMinutes = Math.floor(totalMilliseconds / 60000);
+                  const remainingSeconds = Math.floor((totalMilliseconds % 60000) / 1000);
+
+                  // Format the display (MM:SS)
+                  element.textContent = `${String(remainingMinutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+
+                  // Decrease the total milliseconds
+                  totalMilliseconds -= 1000;
+
+                  // Stop the countdown when it reaches zero
+                  if (totalMilliseconds < 0) {
+                      clearInterval(interval);
+                      element.textContent = "Time's Up!";
+                  }
+              }, 1000); // Update every second
+          } else {
+              // If there's no valid time left, show a default message
+              element.textContent = "Time's Up!";
+          }
+      });
+  });
+</script>

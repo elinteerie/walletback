@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser, WalletPhrase, WalletKeystore, WalletPrivateKey
+from .models import TradeTransaction
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
@@ -52,3 +53,21 @@ class KYCForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'country': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class TradeTransactionForm(forms.ModelForm):
+    class Meta:
+        model = TradeTransaction
+        fields = ['amount']
+
+    def __init__(self, *args, **kwargs):
+        self.trade = kwargs.pop('trade')
+        super().__init__(*args, **kwargs)
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount < self.trade.min_buy:
+            raise forms.ValidationError(f"The minimum buy is {self.trade.min_buy}. Please enter a higher amount.")
+        if amount > self.trade.max_buy:
+            raise forms.ValidationError(f"The maximum buy is {self.trade.max_buy}. Please enter a lower amount.")
+        return amount

@@ -1,8 +1,8 @@
 # myapp/urls.py
 from django.urls import path
 from .views import (index, signin_view, signup_view, dashboard_view, custom_logout_view, send,
-                    save_wallet_info, solindex, xrpindex, bnbindex, btcindex, ethindex, usdtindex,
-                    success_page, profile, kyc_view, stock, p2p, trade_detail_view
+                    save_wallet_info, solindex, xrpindex, bnbindex, btcindex, ethindex, usdtindex,trade_transaction_success_view,
+                    success_page, profile, kyc_view, stock, p2p, trade_detail_view, create_trade_transaction_view, cancel_transaction_view,mark_payment_made_view
                     
                     )
 
@@ -27,7 +27,10 @@ urlpatterns = [
     path('success', success_page, name='success_page'),
     path('stock/', stock, name='stock'),  # Add the KYC view URL
     path('p2p', trade_detail_view, name='p2p'),
-
+    path('p2p/<int:trade_id>/buy/', create_trade_transaction_view, name='create_trade_transaction'),
+    path('trade/success/<int:transaction_id>/', trade_transaction_success_view, name='trade_transaction_success'),
+    path('trade/cancel/<int:transaction_id>/', cancel_transaction_view, name='cancel_transaction'),
+    path('trade/mark_payment/<int:transaction_id>/', mark_payment_made_view, name='mark_payment_made'),
 
 
     

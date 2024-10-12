@@ -1,0 +1,69 @@
+<h2>Transaction Pending</h2>
+
+<p><strong>Seller Name:</strong> {{ trade.user.name }}</p>
+<p><strong>Crypto:</strong> {{ trade.crypto }}</p>
+<p><strong>Amount to Buy:</strong> {{ transaction.amount }}</p>
+<p><strong>Rate:</strong> {{ trade.rate }}</p>
+
+<h3>Seller's Contact Information</h3>
+<p><strong>Contact Merchant:</strong> 
+    <a href="https://wa.me/{{ trade.whatsapp_phone_number }}" target="_blank">
+        Click here to message on WhatsApp
+    </a>
+</p>
+<p><strong>PayPal Email:</strong> {{ trade.paypal_email }}</p>
+<h3>Seller's Contact Information</h3>
+<pre>{{ trade.bank_name }}</pre>
+<pre>{{ trade.account_number }}</pre>
+<pre>{{ trade.account_holder_name }}</pre>
+
+<p><strong>Transaction ID:</strong> {{ transaction.id }}</p>
+
+
+<!-- Timer Section -->
+<h3>Time Remaining to Complete Payment:</h3>
+<p id="timer"></p>
+
+<script>
+    // Convert the transaction expiration to JavaScript Date object
+    var expirationTime = new Date("{{ transaction_expiration|date:'Y-m-d H:i:s' }}").getTime();
+
+    // Update the countdown every 1 second
+    var countdown = setInterval(function() {
+        // Get current date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the expiration time
+        var distance = expirationTime - now;
+
+        // Time calculations for minutes and seconds
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the timer element
+        document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+
+        // If the countdown is over, show an expired message
+        if (distance < 0) {
+            clearInterval(countdown);
+            document.getElementById("timer").innerHTML = "EXPIRED";
+            // Optionally, you can redirect the user or take another action
+        }
+    }, 1000);
+</script>
+
+<div>
+     <p> Transaction Status:{{ transaction.status }}</p>
+</div>
+
+<div>
+    <form action="{% url 'cancel_transaction' transaction.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background-color: red; color: white;">Cancel</button>
+    </form>
+    
+    <form action="{% url 'mark_payment_made' transaction.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background-color: green; color: white;">I Have Made Payment</button>
+    </form>
+</div>
